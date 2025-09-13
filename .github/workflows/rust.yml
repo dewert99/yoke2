@@ -1,0 +1,21 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: cargo test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup rust toolchain, cache
+        uses: moonrepo/setup-rust@v1
+        with:
+          channel: nightly
+          cache-target: dev
+      - run: rustup component add miri
+      - run: cargo +nightly miri test
